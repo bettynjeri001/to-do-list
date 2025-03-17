@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous">
+
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background:  linear-gradient(135deg, #b12577, #5f8ad4);
+        }
+        
+        #authContainer {
+            background:  rgba(255, 255, 255, 0.3); 
+            display: flex;
+            gap: 40px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            height: 400px;
+            text-align: center;
+            }
+        
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        p {
+            margin-top: 10px;
+        }
+
+        a {
+            color: #555;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        
+        #registerForm {
+            display: none;
+        }
+
+        #registerForm:target {
+            display: block;
+        }
+
+        #registerForm:target ~ #loginForm {
+            display: none;
+        }
+        .btn1{
+            font-size: medium;
+        }
+        .btn1:hover{
+            background-color: #333;
+        }
+        .toogle-link{
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .toogle-link:hover{
+            text-decoration: underline;
+        }
+        #loginForm{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+   
+
+    <div id="authContainer">
+        
+        <div id="loginForm">
+            <h2>Login</h2>
+            <form>
+                <label for="loginUsername"></label><br>
+                <input type="text" id="loginUsername" name="loginUsername" placeholder="Username" required><br><br>
+
+                <label for="loginPassword"></label><br>
+                <input type="password" id="loginPassword" name="loginPassword" placeholder="Password"required><br><br>
+
+                <button type="submit" class="btn1">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#registerForm" style="color: white;">Register here</a>.</p>
+        </div>
+        
+        <div id="registerForm">
+            <h2>Register</h2>
+            <form>
+                <label for="registerUsername"></label><br>
+                <input type="text" id="registerUsername" name="registerUsername" placeholder="Username"required><br><br>
+
+                <label for="registerPassword"></label><br>
+                <input type="password" id="registerPassword" name="registerPassword" placeholder="Password" required><br><br>
+
+                <label for="confirmPassword"></label><br>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password"required><br><br>
+
+                <button type="submit" class="btn1">Register</button>
+            </form>
+            <p>Already have an account? <a href="#loginForm" style="color: white;">Login here</a>.</p>
+        </div>
+    </div>
+    
+</body>
+</html>

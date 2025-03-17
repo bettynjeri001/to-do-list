@@ -1,77 +1,96 @@
-// Get DOM elements
-const todoInput = document.getElementById('todo-input');
-const addButton = document.getElementById('add-btn');
-const todoList = document.getElementById('todo-list');
+// DOM Elements
+let taskForm = document.getElementById('taskForm');
+let taskList = document.getElementById('taskList');
 
 // Load tasks from local storage
-let todos = JSON.parse(localStorage.getItem('todos')) || [];
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-// Function to render tasks
+// Current filter state
+let currentFilter = 'all';
+
+// Render tasks based on filter
 function renderTasks() {
-  todoList.innerHTML = ''; // Clear the list before rendering
-  todos.forEach((todo, index) => {
-    const li = document.createElement('li');
-    li.classList.toggle('completed', todo.completed);
-    
-    const text = document.createElement('span');
-    text.textContent = todo.text;
-    
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
-    deleteButton.classList.add('delete-btn');
-    deleteButton.onclick = () => deleteTask(index);
-    
-    const toggleButton = document.createElement('button');
-    toggleButton.textContent = todo.completed ? 'Undo' : 'Complete';
-    toggleButton.onclick = () => toggleComplete(index);
+    taskList.innerHTML = '';
+    let filteredTasks = tasks.filter(task => {
+        if (currentFilter === 'completed') return task.completed;
+        if (currentFilter === 'pending') return !task.completed;
+        return true; // 'all'
+    });
 
-    li.appendChild(text);
-    li.appendChild(toggleButton);
-    li.appendChild(deleteButton);
-    todoList.appendChild(li);
-  });
+    filteredTasks.forEach((task, index) => {
+        let taskItem = document.createElement('li');
+        taskItem.className = `task-item ${task.completed ? 'completed' : ''}`;
+        taskItem.innerHTML = `
+            <div class="task-info">
+                <h3>${task.title}</h3>
+                <p>${task.description}</p>
+                <p class="due-date">Due: ${task.dueDate}</p>
+            </div>
+            <div class="task-actions">
+                <button class="complete" onclick="toggleComplete(${index})">${task.completed ? 'Undo' : 'Complete'}</button>
+                <button class="edit" onclick="editTask(${index})">Edit</button>
+                <button class="delete" onclick="deleteTask(${index})">Delete</button>
+            </div>
+        `;
+        taskList.appendChild(taskItem);
+    });
 }
 
-// Function to add a task
-function addTask() {
-  const taskText = todoInput.value.trim();
-  if (taskText) {
-    todos.push({ text: taskText, completed: false });
-    todoInput.value = '';
-    saveTasks();
-    renderTasks();
-  }
-}
+// Add Task
+taskForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let title = document.getElementById('taskTitle').value;
+    let description = document.getElementById('taskDescription').value;
+    let dueDate = document.getElementById('taskDueDate').value;
 
-// Function to delete a task
-function deleteTask(index) {
-  todos.splice(index, 1);
-  saveTasks();
-  renderTasks();
-}
-
-// Function to mark a task as completed or not
-function toggleComplete(index) {
-  todos[index].completed = !todos[index].completed;
-  saveTasks();
-  renderTasks();
-}
-
-// Function to save tasks to local storage
-function saveTasks() {
-  localStorage.setItem('todos', JSON.stringify(todos));
-}
-
-// Event listeners
-addButton.addEventListener('click', addTask);
-todoInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    addTask();
-  }
+    if (title && dueDate) {
+        tasks.push({ title, description, dueDate, completed: false });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        renderTasks();
+        taskForm.reset();
+    }
 });
 
-// Render tasks on initial load
+// Toggle Complete
+function toggleComplete(index) {
+    tasks[index].completed = !tasks[index].completed;
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    renderTasks();
+}
+
+// Edit Task
+function editTask(index) {;
+    let  task = tasks[index];
+    let newTitle = prompt('Edit Task Title:', task.title);
+    let newDescription = prompt('Edit Task Description:', task.description);
+    let newDueDate = prompt('Edit Due Date (YYYY-MM-DD):', task.dueDate);
+
+    if (newTitle && newDueDate) {
+        tasks[index] = {
+            title: newTitle,
+            description: newDescription,
+            dueDate: newDueDate,
+            completed: task.completed
+        };
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        renderTasks();
+    }
+}
+
+// Delete Task
+function deleteTask(index) {
+    if (confirm('Are you sure you want to delete this task?')) {
+        tasks.splice(index, 1);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        renderTasks();
+    }
+}
+
+// Filter Tasks
+function filterTasks(filter) {
+    currentFilter = filter;
+    renderTasks();
+}
+
+// Initial render
 renderTasks();
-
-
-
