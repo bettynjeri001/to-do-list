@@ -3,7 +3,7 @@ let taskForm = document.getElementById('taskForm');
 let taskList = document.getElementById('taskList');
 
 // Load tasks from local storage
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let task = JSON.parse(localStorage.getItem('tasks')) || [];
 
 // Current filter state
 let currentFilter = 'all';
